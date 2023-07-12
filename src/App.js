@@ -317,17 +317,20 @@ function Cardlist({ cards, boards, selectedBoard }) {
 
 function Card({ card, boards }) {
   const board = boards.find((board) => board.name === card.board);
+  const [votes, setVotes] = useState(card);
+
+  const incrementVote = (type) => {
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [type]: prevVotes[type] + 1,
+    }));
+  };
 
   return (
     <li className="card">
       <p>
         {card.text}
-        <a
-          className="source"
-          href={card.source}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a className="source" href={card.source} target="_blank" rel="noopener noreferrer">
           (source)
         </a>
       </p>
@@ -342,9 +345,9 @@ function Card({ card, boards }) {
         </span>
       )}
       <div className="vote-buttons">
-        <button>👍 {card.votesInteresting}</button>
-        <button>🤯 {card.votesMindblowing}</button>
-        <button>⛔️ {card.votesFalse}</button>
+        <button onClick={() => incrementVote("votesInteresting")}>👍 {votes.votesInteresting}</button>
+        <button onClick={() => incrementVote("votesMindblowing")}>🤯 {votes.votesMindblowing}</button>
+        <button onClick={() => incrementVote("votesFalse")}>⛔️ {votes.votesFalse}</button>
       </div>
     </li>
   );
